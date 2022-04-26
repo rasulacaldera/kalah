@@ -8,6 +8,7 @@ import com.game.kalah.exception.CustomServiceException;
 import com.game.kalah.repository.GameRepository;
 import com.game.kalah.rules.GameRule;
 import com.game.kalah.rules.impl.MoveStoneRule;
+import com.game.kalah.rules.impl.PostMoveRule;
 import com.game.kalah.service.GameService;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,13 @@ public class GameServiceImpl implements GameService {
 
     final GameRepository gameRepository;
     final MoveStoneRule moveStoneRule;
+    final PostMoveRule postMoveRule;
 
-    public GameServiceImpl(GameRepository gameRepository, MoveStoneRule moveStoneRule) {
+    public GameServiceImpl(GameRepository gameRepository, MoveStoneRule moveStoneRule,
+                           PostMoveRule postMoveRule) {
         this.gameRepository = gameRepository;
         this.moveStoneRule = moveStoneRule;
+        this.postMoveRule = postMoveRule;
     }
 
     @Override
@@ -152,6 +156,7 @@ public class GameServiceImpl implements GameService {
     private List<GameRule> getGameRules() {
         List<GameRule> rules = new ArrayList<>();
         rules.add(moveStoneRule);
+        rules.add(postMoveRule);
 
         return rules;
     }
