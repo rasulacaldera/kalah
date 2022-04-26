@@ -5,10 +5,10 @@ import com.game.kalah.constants.PlayerIndex;
 import lombok.Data;
 
 @Data
-public class Bucket {
+public class BucketDto {
 
     private BucketType type;
     private PlayerIndex owner;
     private Integer stoneCount;
-    private Bucket nextBucket;
+    private BucketDto nextBucketDto;
 }

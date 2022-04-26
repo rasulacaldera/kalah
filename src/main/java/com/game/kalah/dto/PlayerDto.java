@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Player {
+public class PlayerDto {
     private PlayerIndex playerIndex;
     private String name;
 }

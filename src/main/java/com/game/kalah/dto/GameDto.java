@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Game {
+public class GameDto {
 
     private Integer gameId;
-    private List<Player> players;
-    private List<Bucket> buckets;
+    private List<PlayerDto> playerDtos;
+    private List<BucketDto> bucketDtos;
 }
