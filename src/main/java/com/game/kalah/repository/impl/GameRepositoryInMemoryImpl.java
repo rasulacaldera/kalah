@@ -14,6 +14,9 @@ public class GameRepositoryInMemoryImpl implements GameRepository {
 
     @Override
     public GameDto save(GameDto game) {
+        if (gameExists(game.getGameId())) {
+            games.replace(game.getGameId(), game);
+        }
         games.put(game.getGameId(), game);
         return game;
     }

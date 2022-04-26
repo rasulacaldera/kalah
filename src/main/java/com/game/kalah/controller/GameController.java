@@ -25,4 +25,12 @@ public class GameController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBug);
     }
+
+    @PutMapping("/{gameId}/pits/{pitIndex}")
+    public ResponseEntity<GameDto> move(@PathVariable String gameId, @PathVariable Integer pitIndex) {
+
+        GameDto responseBug = gameService.makeMove(gameId, pitIndex);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseBug);
+    }
 }
