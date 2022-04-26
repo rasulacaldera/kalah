@@ -7,8 +7,9 @@ import lombok.Data;
 @Data
 public class BucketDto {
 
+    private Integer index;
     private BucketType type;
     private PlayerIndex owner;
     private Integer stoneCount;
-    private BucketDto nextBucketDto;
+    private BucketDto nextBucketDto;// todo remove
 }

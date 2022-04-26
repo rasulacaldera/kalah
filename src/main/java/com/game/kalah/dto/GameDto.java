@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class GameDto {
 
-    private Integer gameId;
-    private List<PlayerDto> playerDtos;
-    private List<BucketDto> bucketDtos;
+    private String gameId;
+    private List<PlayerDto> players;
+    private List<BucketDto> buckets;
 }
