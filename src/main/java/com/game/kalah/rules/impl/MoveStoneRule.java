@@ -57,7 +57,7 @@ public class MoveStoneRule implements GameRule {
     }
 
     private Integer getNextBucketIndex(Integer currentIndex, Integer lastIndex) {
-        if (currentIndex == lastIndex) return 0;//todo add numeric constant
+        if (currentIndex.equals(lastIndex)) return 0;//todo add numeric constant
         else return ++currentIndex;
     }
 }
