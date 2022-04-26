@@ -13,36 +13,40 @@ import java.util.List;
 public class MoveStoneRule implements GameRule {
 
     @Override
-    public void apply(GameDto game, Integer pitIndex) {
+    public void apply(GameDto game, BucketDto currentBucket) {
 
         List<BucketDto> buckets = game.getBuckets();
         int lastIndex = buckets.size() - 1;//todo add numeric constant
-        BucketDto bucketDto = buckets.get(pitIndex);
-        int pebblesToMove = bucketDto.getStoneCount();
-        bucketDto.setStoneCount(0); //todo add numeric constant
+        int pebblesToMove = currentBucket.getStoneCount();
+        currentBucket.setStoneCount(0); //todo add numeric constant
 
         while (pebblesToMove > 0) {//todo add numeric constant
-            int nextIndex = getNextBucketIndex(pitIndex, lastIndex);
-            BucketDto bucket = buckets.get(nextIndex);
-            if (!isAllowedToAddStone(game.getNextPlayer(), bucket)) {
+            int nextIndex = getNextBucketIndex(currentBucket.getIndex(), lastIndex);
+            BucketDto nextBucket = buckets.get(nextIndex);
+            if (!isAllowedToAddStone(game.getNextPlayer(), nextBucket)) {
                 continue;
             }
-            bucket.setStoneCount(bucket.getStoneCount() + 1);//todo add numeric constant
-            pitIndex = nextIndex;
+            nextBucket.setStoneCount(nextBucket.getStoneCount() + 1);//todo add numeric constant
+//            updateNextBucket(currentBucket, nextBucket);
+            currentBucket = nextBucket;
             pebblesToMove--;
         }
 
-        togglePlayer(game, pitIndex);
-
+        togglePlayer(game, currentBucket);
     }
 
-    private void togglePlayer(GameDto game, int pitIndex) {
-        BucketDto bucketDto = game.getBuckets().get(pitIndex);
-        if (bucketDto.getType().equals(BucketType.PIT) ||
-                !bucketDto.getOwner().equals(game.getNextPlayer())) {
+    private void updateNextBucket(BucketDto currentBucket, BucketDto nextBucket) {
+        currentBucket.setIndex(nextBucket.getIndex());
+        currentBucket.setOwner(nextBucket.getOwner());
+        currentBucket.setType(nextBucket.getType());
+        currentBucket.setStoneCount(nextBucket.getStoneCount());
+    }
+
+    private void togglePlayer(GameDto game, BucketDto currentBucket) {
+        if (currentBucket.getType().equals(BucketType.PIT) ||
+                !currentBucket.getOwner().equals(game.getNextPlayer())) {
             game.setNextPlayer(getOtherPlayer(game.getNextPlayer()));
         }
-
     }
 
     private PlayerIndex getOtherPlayer(PlayerIndex currentPlayer) {

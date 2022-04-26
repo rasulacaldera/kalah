@@ -53,10 +53,11 @@ public class GameServiceImpl implements GameService {
         validateMoveInputs(gameId, pitIndex);
 
         GameDto game = gameRepository.getById(gameId);
+        BucketDto currentBucket = game.getBuckets().get(pitIndex);
 
         List<GameRule> rules = getGameRules();
 
-        if (rules == null) {
+        if (rules.isEmpty()) {
             throw CustomServiceException
                     .builder()
                     .error(new ApiError(ErrorMessage.RULES_DOESNT_EXIST, gameId))
@@ -64,7 +65,7 @@ public class GameServiceImpl implements GameService {
         }
 
         for (GameRule rule : rules) {
-            rule.apply(game, pitIndex);
+            rule.apply(game, currentBucket);
         }
 
         gameRepository.save(game);
