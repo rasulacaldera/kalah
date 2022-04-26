@@ -65,7 +65,7 @@ public class GameServiceImpl implements GameService {
         }
 
         for (GameRule rule : rules) {
-            rule.apply(game, currentBucket);
+            currentBucket = rule.apply(game, currentBucket);
         }
 
         gameRepository.save(game);

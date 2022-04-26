@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 public class PostMoveRule implements GameRule {
 
     @Override
-    public void apply(GameDto game, BucketDto currentBucket) {
+    public BucketDto apply(GameDto game, BucketDto currentBucket) {
 
         System.out.println(currentBucket);
+
+        return currentBucket;
     }
 }

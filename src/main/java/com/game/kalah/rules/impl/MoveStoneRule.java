@@ -13,7 +13,7 @@ import java.util.List;
 public class MoveStoneRule implements GameRule {
 
     @Override
-    public void apply(GameDto game, BucketDto currentBucket) {
+    public BucketDto apply(GameDto game, BucketDto currentBucket) {
 
         List<BucketDto> buckets = game.getBuckets();
         int lastIndex = buckets.size() - 1;//todo add numeric constant
@@ -27,19 +27,13 @@ public class MoveStoneRule implements GameRule {
                 continue;
             }
             nextBucket.setStoneCount(nextBucket.getStoneCount() + 1);//todo add numeric constant
-//            updateNextBucket(currentBucket, nextBucket);
             currentBucket = nextBucket;
             pebblesToMove--;
         }
 
         togglePlayer(game, currentBucket);
-    }
 
-    private void updateNextBucket(BucketDto currentBucket, BucketDto nextBucket) {
-        currentBucket.setIndex(nextBucket.getIndex());
-        currentBucket.setOwner(nextBucket.getOwner());
-        currentBucket.setType(nextBucket.getType());
-        currentBucket.setStoneCount(nextBucket.getStoneCount());
+        return currentBucket;
     }
 
     private void togglePlayer(GameDto game, BucketDto currentBucket) {
