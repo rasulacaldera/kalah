@@ -1,4 +1,4 @@
-package advice;
+package com.game.kalah.advice;
 
 import com.game.kalah.constants.ErrorMessage;
 import com.game.kalah.dto.ApiError;
