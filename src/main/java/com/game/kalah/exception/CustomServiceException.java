@@ -6,6 +6,6 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class CustomServiceException extends RuntimeException {
+public class CustomServiceException extends RuntimeException { //todo rename this
     private final transient ApiError error;
 }

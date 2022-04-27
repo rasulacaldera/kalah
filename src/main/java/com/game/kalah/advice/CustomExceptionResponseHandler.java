@@ -20,7 +20,7 @@ public class CustomExceptionResponseHandler extends ResponseEntityExceptionHandl
 
     @ExceptionHandler({CustomServiceException.class})
     public ResponseEntity<Object> handleCustomServiceException(CustomServiceException ex) {
-        LOG.info("User input error - {}, {}", ex.getError().getCode(), ex.getError().getMessage());
+        LOG.info("Invalid Move - {}, {}", ex.getError().getCode(), ex.getError().getMessage());
         return new ResponseEntity<>(ex.getError(),
                 HttpStatus.BAD_REQUEST);
     }
