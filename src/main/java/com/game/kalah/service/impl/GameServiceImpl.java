@@ -2,11 +2,13 @@ package com.game.kalah.service.impl;
 
 import com.game.kalah.constants.BucketType;
 import com.game.kalah.constants.ErrorMessage;
+import com.game.kalah.constants.GameStatus;
 import com.game.kalah.constants.PlayerIndex;
 import com.game.kalah.dto.*;
 import com.game.kalah.exception.CustomServiceException;
 import com.game.kalah.repository.GameRepository;
 import com.game.kalah.rules.GameRule;
+import com.game.kalah.rules.impl.GameEndRule;
 import com.game.kalah.rules.impl.MoveStoneRule;
 import com.game.kalah.rules.impl.PostMoveRule;
 import com.game.kalah.rules.impl.PreMoveRule;
@@ -27,13 +29,15 @@ public class GameServiceImpl implements GameService {
     final MoveStoneRule moveStoneRule;
     final PostMoveRule postMoveRule;
     final PreMoveRule preMoveRule;
+    final GameEndRule gameEndRule;
 
     public GameServiceImpl(GameRepository gameRepository, MoveStoneRule moveStoneRule,
-                           PostMoveRule postMoveRule, PreMoveRule preMoveRule) {
+                           PostMoveRule postMoveRule, PreMoveRule preMoveRule, GameEndRule gameEndRule) {
         this.gameRepository = gameRepository;
         this.moveStoneRule = moveStoneRule;
         this.postMoveRule = postMoveRule;
         this.preMoveRule = preMoveRule;
+        this.gameEndRule = gameEndRule;
     }
 
     @Override
@@ -44,6 +48,7 @@ public class GameServiceImpl implements GameService {
         game.setPlayers(initializeAndGetPlayers(gameRequest));
         game.setBuckets(getDefaultBuckets());
         game.setNextPlayer(PlayerIndex.PLAYER_ONE);
+        game.setGameStatus(GameStatus.IN_PROGRESS);
 
         gameRepository.save(game);
 
@@ -162,6 +167,7 @@ public class GameServiceImpl implements GameService {
         rules.add(preMoveRule);
         rules.add(moveStoneRule);
         rules.add(postMoveRule);
+        rules.add(gameEndRule);
 
         return rules;
     }
