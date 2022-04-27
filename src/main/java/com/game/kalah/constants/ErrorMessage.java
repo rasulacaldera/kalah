@@ -12,7 +12,8 @@ public enum ErrorMessage {
     WRONG_PLAYER_TURN("KAL_0006", "Wrong Turn! It is player %s's turn"),
     CANNOT_START_FROM_HOUSE("KAL_0007", "Cannot start from a House"),
     PIT_HAS_NO_STONES("KAL_0008", "Pit does not contain any stones"),
-    UNABLE_TO_DETERMINE_WINNER("KAL_0009", "Unable to determine winner");
+    UNABLE_TO_DETERMINE_WINNER("KAL_0009", "Unable to determine winner"),
+    GAME_ALREADY_FINISHED("KAL_0010", "Game has already Finished");
 
     private final String code;
     private final String message;
