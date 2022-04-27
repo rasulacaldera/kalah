@@ -31,23 +31,7 @@ public class MoveStoneRule implements GameRule {
             pebblesToMove--;
         }
 
-        togglePlayer(game, currentBucket);
-
         return currentBucket;
-    }
-
-    private void togglePlayer(GameDto game, BucketDto currentBucket) {
-        if (currentBucket.getType().equals(BucketType.PIT) ||
-                !currentBucket.getOwner().equals(game.getNextPlayer())) {
-            game.setNextPlayer(getOtherPlayer(game.getNextPlayer()));
-        }
-    }
-
-    private PlayerIndex getOtherPlayer(PlayerIndex currentPlayer) {
-        if (currentPlayer.equals(PlayerIndex.PLAYER_ONE)) {
-            return PlayerIndex.PLAYER_TWO;
-        }
-        return PlayerIndex.PLAYER_ONE;
     }
 
     private boolean isAllowedToAddStone(PlayerIndex nextPlayer, BucketDto bucket) {

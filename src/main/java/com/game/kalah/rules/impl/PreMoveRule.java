@@ -15,6 +15,8 @@ public class PreMoveRule implements GameRule {
     @Override
     public BucketDto apply(GameDto game, BucketDto currentBucket) {
 
+        //todo state check
+
         if (!currentBucket.getOwner().equals(game.getNextPlayer())) {
             String playerName = game.getPlayers()
                     .stream()
