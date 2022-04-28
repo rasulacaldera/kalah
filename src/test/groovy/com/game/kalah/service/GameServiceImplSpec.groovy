@@ -97,7 +97,7 @@ class GameServiceImplSpecification extends Specification {
         ex.error.message == String.format(ErrorMessage.GAME_NOT_FOUND.message, gameId)
     }
 
-    def "Make Move | Calls all game rules in order"() {
+    def "Make Move | Calls all game rules in order"() { //todo mock and return
         given:
         GameDto game = getDummyGame();
         String gameId = game.gameId
