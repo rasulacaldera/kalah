@@ -1,90 +1,87 @@
 import com.game.kalah.constants.BucketType
-import com.game.kalah.constants.ErrorMessage
 import com.game.kalah.constants.GameStatus
 import com.game.kalah.constants.PlayerIndex
 import com.game.kalah.dto.BucketDto
 import com.game.kalah.dto.GameDto
 import com.game.kalah.dto.PlayerDto
-import com.game.kalah.exception.CustomServiceException
-import com.game.kalah.rules.impl.PreMoveRule
+import com.game.kalah.rules.impl.MoveStoneRule
 import spock.lang.Shared
 import spock.lang.Specification
 
-class PreMoveRuleSpec extends Specification {
+class MoveStoneRuleSpec extends Specification {
 
     @Shared
-    private PreMoveRule preMoveRule
+    private MoveStoneRule moveStoneRule
+
+    private static final int INITIAL_PIT_STONE_COUNT = 4;
+    private static final int INITIAL_HOUSE_STONE_COUNT = 0;
 
     def setup() {
-        preMoveRule = new PreMoveRule()
+        moveStoneRule = new MoveStoneRule()
     }
 
-    def "Apply Rule | Throws an Exception when the Game has already ended"() {
-        given:
-        GameDto game = getDummyGame()
-        game.gameStatus = GameStatus.FINISHED
-        BucketDto currentBucket = game.buckets[0]
-        when:
-        preMoveRule.apply(game, currentBucket)
-        then:
-        Exception ex = thrown(CustomServiceException.class)
-        ex.error.code == ErrorMessage.GAME_ALREADY_FINISHED.code
-        ex.error.message == ErrorMessage.GAME_ALREADY_FINISHED.message
-    }
-
-    def "Apply Rule | Throws an Exception when the wrong player makes a move"() {
-        given:
-        String player1Name = "Test Player"
-        GameDto game = getDummyGame()
-        game.players[0].name = player1Name
-        BucketDto currentBucket = game.buckets[pitIndex]
-        when:
-        preMoveRule.apply(game, currentBucket)
-        then:
-        Exception ex = thrown(CustomServiceException.class)
-        ex.error.code == ErrorMessage.WRONG_PLAYER_TURN.code
-        ex.error.message == String.format(ErrorMessage.WRONG_PLAYER_TURN.message, player1Name)
-        where:
-        pitIndex << [8, 9, 10, 11, 12, 13]
-    }
-
-    def "Apply Rule | Throws an Exception when player picks a house"() {
+    def "Apply Rule | Moves stones"() {
         given:
         GameDto game = getDummyGame()
         game.nextPlayer = player
         BucketDto currentBucket = game.buckets[pitIndex]
+        Integer stoneCount = currentBucket.stoneCount
         when:
-        preMoveRule.apply(game, currentBucket)
+        moveStoneRule.apply(game, currentBucket)
         then:
-        Exception ex = thrown(CustomServiceException.class)
-        ex.error.code == ErrorMessage.CANNOT_START_FROM_HOUSE.code
-        ex.error.message == ErrorMessage.CANNOT_START_FROM_HOUSE.message
-        where:
-        player                 | pitIndex
-        PlayerIndex.PLAYER_ONE | 6
-        PlayerIndex.PLAYER_TWO | 13
-    }
-
-    def "Apply Rule | Throws an Exception when Pit has no stones"() {
-        given:
-        GameDto game = getDummyGame()
-        game.nextPlayer = player
-        BucketDto currentBucket = game.buckets[pitIndex]
-        currentBucket.stoneCount = 0
-        when:
-        preMoveRule.apply(game, currentBucket)
-        then:
-        Exception ex = thrown(CustomServiceException.class)
-        ex.error.code == ErrorMessage.PIT_HAS_NO_STONES.code
-        ex.error.message == ErrorMessage.PIT_HAS_NO_STONES.message
+        noExceptionThrown()
+        assertBuckets(game.buckets, pitIndex, player, stoneCount, true)
         where:
         player                 | pitIndex
         PlayerIndex.PLAYER_ONE | 0
+        PlayerIndex.PLAYER_ONE | 1
+        PlayerIndex.PLAYER_ONE | 2
         PlayerIndex.PLAYER_ONE | 3
+        PlayerIndex.PLAYER_ONE | 4
         PlayerIndex.PLAYER_ONE | 5
         PlayerIndex.PLAYER_TWO | 7
+        PlayerIndex.PLAYER_TWO | 8
+        PlayerIndex.PLAYER_TWO | 9
         PlayerIndex.PLAYER_TWO | 10
+        PlayerIndex.PLAYER_TWO | 11
         PlayerIndex.PLAYER_TWO | 12
+    }
+
+    private boolean assertBuckets(List<BucketDto> buckets,
+                                  Integer startingIndex,
+                                  PlayerIndex player,
+                                  Integer stoneCount,
+                                  boolean validateTotal) {
+
+        if (buckets[startingIndex].stoneCount != 0) {
+            return false;
+        }
+
+        while (stoneCount > 0) {
+            Integer newIndex = ++startingIndex
+            if (newIndex >= buckets.size()) {
+                newIndex = 0;
+            }
+            BucketDto newBucket = buckets[newIndex];
+            Integer expectedCount = INITIAL_PIT_STONE_COUNT + 1
+            if (newBucket.type == BucketType.HOUSE) {
+                expectedCount = INITIAL_HOUSE_STONE_COUNT + 1
+            }
+            boolean stoneAdded = newBucket.stoneCount == expectedCount
+            if (!stoneAdded) {
+                return false;
+            }
+            --stoneCount;
+        }
+
+        if (validateTotal) {
+            boolean isValidTotalStoneCount = buckets.stoneCount.sum() == INITIAL_PIT_STONE_COUNT * 12
+            if (!isValidTotalStoneCount) {
+                return false
+            }
+        }
+
+        return true;
     }
 
     private GameDto getDummyGame() {
