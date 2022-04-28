@@ -47,6 +47,34 @@ class MoveStoneRuleSpec extends Specification {
         PlayerIndex.PLAYER_TWO | 12
     }
 
+    def "Apply Rule | Moves stones | Skips opponents House"() {
+        given:
+        Integer stoneCount = 12
+        GameDto game = getDummyGame()
+        game.nextPlayer = player
+        BucketDto currentBucket = game.buckets[pitIndex]
+        currentBucket.stoneCount = stoneCount
+        when:
+        moveStoneRule.apply(game, currentBucket)
+        then:
+        noExceptionThrown()
+        assertBuckets(game.buckets, pitIndex, player, stoneCount, false)
+        where:
+        player                 | pitIndex
+        PlayerIndex.PLAYER_ONE | 0
+        PlayerIndex.PLAYER_ONE | 1
+        PlayerIndex.PLAYER_ONE | 2
+        PlayerIndex.PLAYER_ONE | 3
+        PlayerIndex.PLAYER_ONE | 4
+        PlayerIndex.PLAYER_ONE | 5
+        PlayerIndex.PLAYER_TWO | 7
+        PlayerIndex.PLAYER_TWO | 8
+        PlayerIndex.PLAYER_TWO | 9
+        PlayerIndex.PLAYER_TWO | 10
+        PlayerIndex.PLAYER_TWO | 11
+        PlayerIndex.PLAYER_TWO | 12
+    }
+
     private boolean assertBuckets(List<BucketDto> buckets,
                                   Integer startingIndex,
                                   PlayerIndex player,
@@ -65,6 +93,11 @@ class MoveStoneRuleSpec extends Specification {
             BucketDto newBucket = buckets[newIndex];
             Integer expectedCount = INITIAL_PIT_STONE_COUNT + 1
             if (newBucket.type == BucketType.HOUSE) {
+
+                if (newBucket.owner != player) {
+                    continue;
+                }
+
                 expectedCount = INITIAL_HOUSE_STONE_COUNT + 1
             }
             boolean stoneAdded = newBucket.stoneCount == expectedCount
@@ -81,7 +114,11 @@ class MoveStoneRuleSpec extends Specification {
             }
         }
 
-        return true;
+        Integer opponentHouseStones = buckets
+                .find { bucket -> bucket.owner != player && bucket.type == BucketType.HOUSE }
+                .stoneCount
+
+        return opponentHouseStones == INITIAL_HOUSE_STONE_COUNT;
     }
 
     private GameDto getDummyGame() {
