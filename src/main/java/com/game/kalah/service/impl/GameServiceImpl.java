@@ -90,7 +90,7 @@ public class GameServiceImpl implements GameService {
                     .build();
         }
 
-        if (pitIndex >= MAX_BUCKET_COUNT) {
+        if (pitIndex < 0 || pitIndex >= MAX_BUCKET_COUNT) { //todo use numeric constant
             throw CustomServiceException
                     .builder()
                     .error(new ApiError(ErrorMessage.PIT_INDEX_OUT_OF_BOUNDS,
