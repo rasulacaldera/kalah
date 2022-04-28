@@ -56,6 +56,10 @@ public class PostMoveRule implements GameRule {
                 .sorted(Comparator.comparingInt(BucketDto::getIndex).reversed())
                 .collect(Collectors.toList());
 
+        if (playerBucketIndex < 0) { //todo error to debug
+            System.out.println(playerBucketIndex);
+            System.out.println(currentBucket);
+        }
         return opponentBuckets.get(playerBucketIndex);
     }
 
