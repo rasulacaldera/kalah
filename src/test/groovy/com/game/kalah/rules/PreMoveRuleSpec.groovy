@@ -1,7 +1,7 @@
 import com.game.kalah.constants.BucketType
 import com.game.kalah.constants.ErrorMessage
 import com.game.kalah.constants.GameStatus
-import com.game.kalah.constants.PlayerIndex
+import com.game.kalah.constants.PlayerId
 import com.game.kalah.dto.BucketDto
 import com.game.kalah.dto.GameDto
 import com.game.kalah.dto.PlayerDto
@@ -60,9 +60,9 @@ class PreMoveRuleSpec extends Specification {
         ex.error.code == ErrorMessage.CANNOT_START_FROM_HOUSE.code
         ex.error.message == ErrorMessage.CANNOT_START_FROM_HOUSE.message
         where:
-        player                 | pitIndex
-        PlayerIndex.PLAYER_ONE | 6
-        PlayerIndex.PLAYER_TWO | 13
+        player              | pitIndex
+        PlayerId.PLAYER_ONE | 6
+        PlayerId.PLAYER_TWO | 13
     }
 
     def "Apply Rule | Throws an Exception when Pit has no stones"() {
@@ -78,13 +78,13 @@ class PreMoveRuleSpec extends Specification {
         ex.error.code == ErrorMessage.PIT_HAS_NO_STONES.code
         ex.error.message == ErrorMessage.PIT_HAS_NO_STONES.message
         where:
-        player                 | pitIndex
-        PlayerIndex.PLAYER_ONE | 0
-        PlayerIndex.PLAYER_ONE | 3
-        PlayerIndex.PLAYER_ONE | 5
-        PlayerIndex.PLAYER_TWO | 7
-        PlayerIndex.PLAYER_TWO | 10
-        PlayerIndex.PLAYER_TWO | 12
+        player              | pitIndex
+        PlayerId.PLAYER_ONE | 0
+        PlayerId.PLAYER_ONE | 3
+        PlayerId.PLAYER_ONE | 5
+        PlayerId.PLAYER_TWO | 7
+        PlayerId.PLAYER_TWO | 10
+        PlayerId.PLAYER_TWO | 12
     }
 
     private GameDto getDummyGame() {
@@ -93,90 +93,90 @@ class PreMoveRuleSpec extends Specification {
                 players: getDummyPlayers(),
                 gameStatus: GameStatus.IN_PROGRESS,
                 winner: null,
-                nextPlayer: PlayerIndex.PLAYER_ONE,
+                nextPlayer: PlayerId.PLAYER_ONE,
                 buckets: [
                         new BucketDto(
                                 index: 0,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 1,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 2,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 3,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 4,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 5,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 6,
                                 type: BucketType.HOUSE,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: 0
                         ),
                         new BucketDto(
                                 index: 7,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 8,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 9,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 10,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 11,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 12,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: 4
                         ),
                         new BucketDto(
                                 index: 13,
                                 type: BucketType.HOUSE,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: 0
                         )
                 ]
@@ -186,11 +186,11 @@ class PreMoveRuleSpec extends Specification {
     private List<PlayerDto> getDummyPlayers() {
 
         PlayerDto player1 = new PlayerDto()
-        player1.playerIndex = PlayerIndex.PLAYER_ONE
+        player1.playerId = PlayerId.PLAYER_ONE
         player1.name = "Dummy1"
 
         PlayerDto player2 = new PlayerDto()
-        player2.playerIndex = PlayerIndex.PLAYER_TWO
+        player2.playerId = PlayerId.PLAYER_TWO
         player2.name = "Dummy2"
 
         return [player1, player2]

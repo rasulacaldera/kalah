@@ -1,6 +1,6 @@
 package com.game.kalah.constants;
 
-public enum PlayerIndex { //todo rename
+public enum PlayerId {
     PLAYER_ONE,
     PLAYER_TWO
 }

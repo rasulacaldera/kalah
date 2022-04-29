@@ -1,7 +1,7 @@
 package com.game.kalah.rules.impl;
 
 import com.game.kalah.constants.BucketType;
-import com.game.kalah.constants.PlayerIndex;
+import com.game.kalah.constants.PlayerId;
 import com.game.kalah.dto.BucketDto;
 import com.game.kalah.dto.GameDto;
 import com.game.kalah.rules.GameRule;
@@ -34,7 +34,7 @@ public class MoveStoneRule implements GameRule {
         return currentBucket;
     }
 
-    private boolean isAllowedToAddStone(PlayerIndex nextPlayer, BucketDto bucket) {
+    private boolean isAllowedToAddStone(PlayerId nextPlayer, BucketDto bucket) {
 
         return bucket.getType().equals(BucketType.PIT) ||
                 bucket.getOwner().equals(nextPlayer);

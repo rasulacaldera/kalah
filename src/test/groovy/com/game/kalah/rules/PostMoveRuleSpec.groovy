@@ -1,6 +1,6 @@
 import com.game.kalah.constants.BucketType
 import com.game.kalah.constants.GameStatus
-import com.game.kalah.constants.PlayerIndex
+import com.game.kalah.constants.PlayerId
 import com.game.kalah.dto.BucketDto
 import com.game.kalah.dto.GameDto
 import com.game.kalah.dto.PlayerDto
@@ -31,31 +31,31 @@ class PostMoveRuleSpec extends Specification {
         noExceptionThrown()
         game.nextPlayer != player
         where:
-        player                 | endIndex
-        PlayerIndex.PLAYER_ONE | 0
-        PlayerIndex.PLAYER_ONE | 1
-        PlayerIndex.PLAYER_ONE | 2
-        PlayerIndex.PLAYER_ONE | 3
-        PlayerIndex.PLAYER_ONE | 4
-        PlayerIndex.PLAYER_ONE | 5
-        PlayerIndex.PLAYER_ONE | 7
-        PlayerIndex.PLAYER_ONE | 8
-        PlayerIndex.PLAYER_ONE | 9
-        PlayerIndex.PLAYER_ONE | 10
-        PlayerIndex.PLAYER_ONE | 11
-        PlayerIndex.PLAYER_ONE | 12
-        PlayerIndex.PLAYER_TWO | 0
-        PlayerIndex.PLAYER_TWO | 1
-        PlayerIndex.PLAYER_TWO | 2
-        PlayerIndex.PLAYER_TWO | 3
-        PlayerIndex.PLAYER_TWO | 4
-        PlayerIndex.PLAYER_TWO | 5
-        PlayerIndex.PLAYER_TWO | 7
-        PlayerIndex.PLAYER_TWO | 8
-        PlayerIndex.PLAYER_TWO | 9
-        PlayerIndex.PLAYER_TWO | 10
-        PlayerIndex.PLAYER_TWO | 11
-        PlayerIndex.PLAYER_TWO | 12
+        player              | endIndex
+        PlayerId.PLAYER_ONE | 0
+        PlayerId.PLAYER_ONE | 1
+        PlayerId.PLAYER_ONE | 2
+        PlayerId.PLAYER_ONE | 3
+        PlayerId.PLAYER_ONE | 4
+        PlayerId.PLAYER_ONE | 5
+        PlayerId.PLAYER_ONE | 7
+        PlayerId.PLAYER_ONE | 8
+        PlayerId.PLAYER_ONE | 9
+        PlayerId.PLAYER_ONE | 10
+        PlayerId.PLAYER_ONE | 11
+        PlayerId.PLAYER_ONE | 12
+        PlayerId.PLAYER_TWO | 0
+        PlayerId.PLAYER_TWO | 1
+        PlayerId.PLAYER_TWO | 2
+        PlayerId.PLAYER_TWO | 3
+        PlayerId.PLAYER_TWO | 4
+        PlayerId.PLAYER_TWO | 5
+        PlayerId.PLAYER_TWO | 7
+        PlayerId.PLAYER_TWO | 8
+        PlayerId.PLAYER_TWO | 9
+        PlayerId.PLAYER_TWO | 10
+        PlayerId.PLAYER_TWO | 11
+        PlayerId.PLAYER_TWO | 12
     }
 
     def "Apply Rule | Toggles player | Does not toggle when it ends on own player House"() {
@@ -69,9 +69,9 @@ class PostMoveRuleSpec extends Specification {
         noExceptionThrown()
         game.nextPlayer == player
         where:
-        player                 | endIndex
-        PlayerIndex.PLAYER_ONE | 6
-        PlayerIndex.PLAYER_TWO | 13
+        player              | endIndex
+        PlayerId.PLAYER_ONE | 6
+        PlayerId.PLAYER_TWO | 13
     }
 
     def "Apply Rule | Capture Opponent Stones | Does not capture stones when ending on a non empty pit or empty house"() {
@@ -87,21 +87,21 @@ class PostMoveRuleSpec extends Specification {
                 .findAll(bucket -> bucket.type == BucketType.HOUSE)
                 .every { bucket -> bucket.stoneCount == INITIAL_HOUSE_STONE_COUNT }
         where:
-        player                 | endIndex
-        PlayerIndex.PLAYER_ONE | 0
-        PlayerIndex.PLAYER_ONE | 1
-        PlayerIndex.PLAYER_ONE | 2
-        PlayerIndex.PLAYER_ONE | 3
-        PlayerIndex.PLAYER_ONE | 4
-        PlayerIndex.PLAYER_ONE | 5
-        PlayerIndex.PLAYER_ONE | 6
-        PlayerIndex.PLAYER_TWO | 7
-        PlayerIndex.PLAYER_TWO | 8
-        PlayerIndex.PLAYER_TWO | 9
-        PlayerIndex.PLAYER_TWO | 10
-        PlayerIndex.PLAYER_TWO | 11
-        PlayerIndex.PLAYER_TWO | 12
-        PlayerIndex.PLAYER_TWO | 13
+        player              | endIndex
+        PlayerId.PLAYER_ONE | 0
+        PlayerId.PLAYER_ONE | 1
+        PlayerId.PLAYER_ONE | 2
+        PlayerId.PLAYER_ONE | 3
+        PlayerId.PLAYER_ONE | 4
+        PlayerId.PLAYER_ONE | 5
+        PlayerId.PLAYER_ONE | 6
+        PlayerId.PLAYER_TWO | 7
+        PlayerId.PLAYER_TWO | 8
+        PlayerId.PLAYER_TWO | 9
+        PlayerId.PLAYER_TWO | 10
+        PlayerId.PLAYER_TWO | 11
+        PlayerId.PLAYER_TWO | 12
+        PlayerId.PLAYER_TWO | 13
     }
 
     def "Apply Rule | Capture Opponent Stones | Does not capture stones when ending on a empty opponent empty pit"() {
@@ -118,19 +118,19 @@ class PostMoveRuleSpec extends Specification {
                 .findAll(bucket -> bucket.type == BucketType.HOUSE)
                 .every { bucket -> bucket.stoneCount == INITIAL_HOUSE_STONE_COUNT }
         where:
-        player                 | endIndex
-        PlayerIndex.PLAYER_ONE | 7
-        PlayerIndex.PLAYER_ONE | 8
-        PlayerIndex.PLAYER_ONE | 9
-        PlayerIndex.PLAYER_ONE | 10
-        PlayerIndex.PLAYER_ONE | 11
-        PlayerIndex.PLAYER_ONE | 12
-        PlayerIndex.PLAYER_TWO | 0
-        PlayerIndex.PLAYER_TWO | 1
-        PlayerIndex.PLAYER_TWO | 2
-        PlayerIndex.PLAYER_TWO | 3
-        PlayerIndex.PLAYER_TWO | 4
-        PlayerIndex.PLAYER_TWO | 5
+        player              | endIndex
+        PlayerId.PLAYER_ONE | 7
+        PlayerId.PLAYER_ONE | 8
+        PlayerId.PLAYER_ONE | 9
+        PlayerId.PLAYER_ONE | 10
+        PlayerId.PLAYER_ONE | 11
+        PlayerId.PLAYER_ONE | 12
+        PlayerId.PLAYER_TWO | 0
+        PlayerId.PLAYER_TWO | 1
+        PlayerId.PLAYER_TWO | 2
+        PlayerId.PLAYER_TWO | 3
+        PlayerId.PLAYER_TWO | 4
+        PlayerId.PLAYER_TWO | 5
     }
 
     def "Apply Rule | Capture Opponent Stones | Captures enemy stones when ending in players empty pit"() {
@@ -155,24 +155,24 @@ class PostMoveRuleSpec extends Specification {
                 .find(bucket -> bucket.type == BucketType.HOUSE && bucket.owner != player)
         opponentPlayerHouse.stoneCount == INITIAL_HOUSE_STONE_COUNT
         where:
-        player                 | endIndex | opponentBucketIndex
-        PlayerIndex.PLAYER_ONE | 0        | 12
-        PlayerIndex.PLAYER_ONE | 1        | 11
-        PlayerIndex.PLAYER_ONE | 2        | 10
-        PlayerIndex.PLAYER_ONE | 3        | 9
-        PlayerIndex.PLAYER_ONE | 4        | 8
-        PlayerIndex.PLAYER_ONE | 5        | 7
-        PlayerIndex.PLAYER_TWO | 7        | 5
-        PlayerIndex.PLAYER_TWO | 8        | 4
-        PlayerIndex.PLAYER_TWO | 9        | 3
-        PlayerIndex.PLAYER_TWO | 10       | 2
-        PlayerIndex.PLAYER_TWO | 11       | 1
-        PlayerIndex.PLAYER_TWO | 12       | 0
+        player              | endIndex | opponentBucketIndex
+        PlayerId.PLAYER_ONE | 0        | 12
+        PlayerId.PLAYER_ONE | 1        | 11
+        PlayerId.PLAYER_ONE | 2        | 10
+        PlayerId.PLAYER_ONE | 3        | 9
+        PlayerId.PLAYER_ONE | 4        | 8
+        PlayerId.PLAYER_ONE | 5        | 7
+        PlayerId.PLAYER_TWO | 7        | 5
+        PlayerId.PLAYER_TWO | 8        | 4
+        PlayerId.PLAYER_TWO | 9        | 3
+        PlayerId.PLAYER_TWO | 10       | 2
+        PlayerId.PLAYER_TWO | 11       | 1
+        PlayerId.PLAYER_TWO | 12       | 0
     }
 
     private boolean assertBuckets(List<BucketDto> buckets,
                                   Integer startingIndex,
-                                  PlayerIndex player,
+                                  PlayerId player,
                                   Integer stoneCount,
                                   boolean validateTotal) {
 
@@ -222,90 +222,90 @@ class PostMoveRuleSpec extends Specification {
                 players: getDummyPlayers(),
                 gameStatus: GameStatus.IN_PROGRESS,
                 winner: null,
-                nextPlayer: PlayerIndex.PLAYER_ONE,
+                nextPlayer: PlayerId.PLAYER_ONE,
                 buckets: [
                         new BucketDto(
                                 index: 0,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 1,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 2,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 3,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 4,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 5,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 6,
                                 type: BucketType.HOUSE,
-                                owner: PlayerIndex.PLAYER_ONE,
+                                owner: PlayerId.PLAYER_ONE,
                                 stoneCount: INITIAL_HOUSE_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 7,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 8,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 9,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 10,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 11,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 12,
                                 type: BucketType.PIT,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 13,
                                 type: BucketType.HOUSE,
-                                owner: PlayerIndex.PLAYER_TWO,
+                                owner: PlayerId.PLAYER_TWO,
                                 stoneCount: INITIAL_HOUSE_STONE_COUNT
                         )
                 ]
@@ -315,11 +315,11 @@ class PostMoveRuleSpec extends Specification {
     private List<PlayerDto> getDummyPlayers() {
 
         PlayerDto player1 = new PlayerDto()
-        player1.playerIndex = PlayerIndex.PLAYER_ONE
+        player1.playerId = PlayerId.PLAYER_ONE
         player1.name = "Dummy1"
 
         PlayerDto player2 = new PlayerDto()
-        player2.playerIndex = PlayerIndex.PLAYER_TWO
+        player2.playerId = PlayerId.PLAYER_TWO
         player2.name = "Dummy2"
 
         return [player1, player2]

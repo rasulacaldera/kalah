@@ -3,7 +3,7 @@ package com.game.kalah.service.impl;
 import com.game.kalah.constants.BucketType;
 import com.game.kalah.constants.ErrorMessage;
 import com.game.kalah.constants.GameStatus;
-import com.game.kalah.constants.PlayerIndex;
+import com.game.kalah.constants.PlayerId;
 import com.game.kalah.dto.*;
 import com.game.kalah.exception.CustomServiceException;
 import com.game.kalah.repository.GameRepository;
@@ -47,7 +47,7 @@ public class GameServiceImpl implements GameService {
         game.setGameId(UUID.randomUUID().toString());
         game.setPlayers(initializeAndGetPlayers(gameRequest));
         game.setBuckets(getDefaultBuckets());
-        game.setNextPlayer(PlayerIndex.PLAYER_ONE);
+        game.setNextPlayer(PlayerId.PLAYER_ONE);
         game.setGameStatus(GameStatus.IN_PROGRESS);
 
         gameRepository.save(game);
@@ -109,8 +109,8 @@ public class GameServiceImpl implements GameService {
     private List<PlayerDto> initializeAndGetPlayers(CreateGameRequestModel gameRequest) {
 
         List<PlayerDto> players = new ArrayList<>();
-        PlayerDto player1 = new PlayerDto(PlayerIndex.PLAYER_ONE, gameRequest.getPlayerOneName());
-        PlayerDto player2 = new PlayerDto(PlayerIndex.PLAYER_TWO, gameRequest.getPlayerTwoName());
+        PlayerDto player1 = new PlayerDto(PlayerId.PLAYER_ONE, gameRequest.getPlayerOneName());
+        PlayerDto player2 = new PlayerDto(PlayerId.PLAYER_TWO, gameRequest.getPlayerTwoName());
 
         players.add(player1);
         players.add(player2);
@@ -119,25 +119,25 @@ public class GameServiceImpl implements GameService {
     }
 
     private List<BucketDto> getDefaultBuckets() {
-        List<BucketDto> buckets = getDefaultBucketsForPlayer(PlayerIndex.PLAYER_ONE);
-        buckets.addAll(getDefaultBucketsForPlayer(PlayerIndex.PLAYER_TWO));
+        List<BucketDto> buckets = getDefaultBucketsForPlayer(PlayerId.PLAYER_ONE);
+        buckets.addAll(getDefaultBucketsForPlayer(PlayerId.PLAYER_TWO));
 
         return processAndLinkBuckets(buckets);
     }
 
-    private List<BucketDto> getDefaultBucketsForPlayer(PlayerIndex playerIndex) {
+    private List<BucketDto> getDefaultBucketsForPlayer(PlayerId playerId) {
         List<BucketDto> buckets = new ArrayList<>();
 
         for (int i = 0; i < 6; i++) {
             BucketDto bucket = new BucketDto();
-            bucket.setOwner(playerIndex);
+            bucket.setOwner(playerId);
             bucket.setStoneCount(INITIAL_STONE_COUNT_PER_BUCKET);
             bucket.setType(BucketType.PIT);
             buckets.add(bucket);
         }
 
         BucketDto house = new BucketDto();
-        house.setOwner(playerIndex);
+        house.setOwner(playerId);
         house.setStoneCount(0);
         house.setType(BucketType.HOUSE);
         buckets.add(house);

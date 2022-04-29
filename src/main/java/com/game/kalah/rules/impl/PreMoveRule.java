@@ -26,7 +26,7 @@ public class PreMoveRule implements GameRule {
         if (!currentBucket.getOwner().equals(game.getNextPlayer())) {
             String playerName = game.getPlayers()
                     .stream()
-                    .filter(player -> player.getPlayerIndex().equals(game.getNextPlayer()))
+                    .filter(player -> player.getPlayerId().equals(game.getNextPlayer()))
                     .findFirst()
                     .get()
                     .getName();

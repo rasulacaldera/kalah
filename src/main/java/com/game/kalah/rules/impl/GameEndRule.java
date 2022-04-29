@@ -3,7 +3,7 @@ package com.game.kalah.rules.impl;
 import com.game.kalah.constants.BucketType;
 import com.game.kalah.constants.ErrorMessage;
 import com.game.kalah.constants.GameStatus;
-import com.game.kalah.constants.PlayerIndex;
+import com.game.kalah.constants.PlayerId;
 import com.game.kalah.dto.ApiError;
 import com.game.kalah.dto.BucketDto;
 import com.game.kalah.dto.GameDto;
@@ -23,17 +23,17 @@ public class GameEndRule implements GameRule {
     @Override
     public BucketDto apply(GameDto game, BucketDto currentBucket) {
 
-        Map<PlayerIndex, Integer> countPerPlayer = game.getBuckets()
+        Map<PlayerId, Integer> countPerPlayer = game.getBuckets()
                 .stream()
                 .filter(bucket -> bucket.getType().equals(BucketType.PIT))
                 .collect(Collectors.groupingBy(BucketDto::getOwner, Collectors.summingInt(BucketDto::getStoneCount)));
 
         if (countPerPlayer.containsValue(0)) { //todo use numeric constant
             game.setGameStatus(GameStatus.FINISHED);
-            PlayerIndex winnerId = getWinnerId(game);
+            PlayerId winnerId = getWinnerId(game);
             Optional<PlayerDto> winner = game.getPlayers()
                     .stream()
-                    .filter(player -> player.getPlayerIndex().equals(winnerId))
+                    .filter(player -> player.getPlayerId().equals(winnerId))
                     .findFirst();
             winner.ifPresent(game::setWinner);
         }
@@ -41,7 +41,7 @@ public class GameEndRule implements GameRule {
         return null;
     }
 
-    private PlayerIndex getWinnerId(GameDto game) {
+    private PlayerId getWinnerId(GameDto game) {
 
         Optional<BucketDto> winningBucket = game.getBuckets()
                 .stream()

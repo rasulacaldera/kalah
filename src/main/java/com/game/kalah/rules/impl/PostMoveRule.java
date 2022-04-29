@@ -1,7 +1,7 @@
 package com.game.kalah.rules.impl;
 
 import com.game.kalah.constants.BucketType;
-import com.game.kalah.constants.PlayerIndex;
+import com.game.kalah.constants.PlayerId;
 import com.game.kalah.dto.BucketDto;
 import com.game.kalah.dto.GameDto;
 import com.game.kalah.rules.GameRule;
@@ -73,10 +73,10 @@ public class PostMoveRule implements GameRule {
         }
     }
 
-    private PlayerIndex getOtherPlayer(PlayerIndex currentPlayer) {
-        if (currentPlayer.equals(PlayerIndex.PLAYER_ONE)) {
-            return PlayerIndex.PLAYER_TWO;
+    private PlayerId getOtherPlayer(PlayerId currentPlayer) {
+        if (currentPlayer.equals(PlayerId.PLAYER_ONE)) {
+            return PlayerId.PLAYER_TWO;
         }
-        return PlayerIndex.PLAYER_ONE;
+        return PlayerId.PLAYER_ONE;
     }
 }
