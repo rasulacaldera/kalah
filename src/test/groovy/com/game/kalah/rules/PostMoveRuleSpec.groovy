@@ -1,5 +1,6 @@
 import com.game.kalah.constants.BucketType
 import com.game.kalah.constants.GameStatus
+import com.game.kalah.constants.NumericConstants
 import com.game.kalah.constants.PlayerId
 import com.game.kalah.dto.BucketDto
 import com.game.kalah.dto.GameDto
@@ -12,9 +13,6 @@ class PostMoveRuleSpec extends Specification {
 
     @Shared
     private PostMoveRule postMoveRule
-
-    private static final int INITIAL_PIT_STONE_COUNT = 4;
-    private static final int INITIAL_HOUSE_STONE_COUNT = 0;
 
     def setup() {
         postMoveRule = new PostMoveRule()
@@ -85,7 +83,7 @@ class PostMoveRuleSpec extends Specification {
         noExceptionThrown()
         game.buckets
                 .findAll(bucket -> bucket.type == BucketType.HOUSE)
-                .every { bucket -> bucket.stoneCount == INITIAL_HOUSE_STONE_COUNT }
+                .every { bucket -> bucket.stoneCount == NumericConstants.INITIAL_HOUSE_STONE_COUNT }
         where:
         player              | endIndex
         PlayerId.PLAYER_ONE | 0
@@ -116,7 +114,7 @@ class PostMoveRuleSpec extends Specification {
         noExceptionThrown()
         game.buckets
                 .findAll(bucket -> bucket.type == BucketType.HOUSE)
-                .every { bucket -> bucket.stoneCount == INITIAL_HOUSE_STONE_COUNT }
+                .every { bucket -> bucket.stoneCount == NumericConstants.INITIAL_HOUSE_STONE_COUNT }
         where:
         player              | endIndex
         PlayerId.PLAYER_ONE | 7
@@ -141,7 +139,7 @@ class PostMoveRuleSpec extends Specification {
         game.nextPlayer = player
         BucketDto currentBucket = game.buckets[endIndex]
         currentBucket.stoneCount = startingPitStoneCount
-        game.buckets[opponentBucketIndex].stoneCount = INITIAL_PIT_STONE_COUNT
+        game.buckets[opponentBucketIndex].stoneCount = NumericConstants.INITIAL_PIT_STONE_COUNT
         when:
         postMoveRule.apply(game, currentBucket)
         then:
@@ -150,10 +148,10 @@ class PostMoveRuleSpec extends Specification {
         game.buckets[endIndex].stoneCount == emptyPitCount
         BucketDto currentPlayerHouse = game.buckets
                 .find(bucket -> bucket.type == BucketType.HOUSE && bucket.owner == player)
-        currentPlayerHouse.stoneCount == startingPitStoneCount + INITIAL_PIT_STONE_COUNT
+        currentPlayerHouse.stoneCount == startingPitStoneCount + NumericConstants.INITIAL_PIT_STONE_COUNT
         BucketDto opponentPlayerHouse = game.buckets
                 .find(bucket -> bucket.type == BucketType.HOUSE && bucket.owner != player)
-        opponentPlayerHouse.stoneCount == INITIAL_HOUSE_STONE_COUNT
+        opponentPlayerHouse.stoneCount == NumericConstants.INITIAL_HOUSE_STONE_COUNT
         where:
         player              | endIndex | opponentBucketIndex
         PlayerId.PLAYER_ONE | 0        | 12
@@ -193,7 +191,7 @@ class PostMoveRuleSpec extends Specification {
                     continue;
                 }
 
-                expectedCount = INITIAL_HOUSE_STONE_COUNT + 1
+                expectedCount = NumericConstants.INITIAL_HOUSE_STONE_COUNT + 1
             }
             boolean stoneAdded = newBucket.stoneCount == expectedCount
             if (!stoneAdded) {
@@ -213,7 +211,7 @@ class PostMoveRuleSpec extends Specification {
                 .find { bucket -> bucket.owner != player && bucket.type == BucketType.HOUSE }
                 .stoneCount
 
-        return opponentHouseStones == INITIAL_HOUSE_STONE_COUNT;
+        return opponentHouseStones == NumericConstants.INITIAL_HOUSE_STONE_COUNT;
     }
 
     private GameDto getDummyGame() {
@@ -228,85 +226,85 @@ class PostMoveRuleSpec extends Specification {
                                 index: 0,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_ONE,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 1,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_ONE,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 2,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_ONE,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 3,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_ONE,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 4,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_ONE,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 5,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_ONE,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 6,
                                 type: BucketType.HOUSE,
                                 owner: PlayerId.PLAYER_ONE,
-                                stoneCount: INITIAL_HOUSE_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_HOUSE_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 7,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_TWO,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 8,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_TWO,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 9,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_TWO,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 10,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_TWO,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 11,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_TWO,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 12,
                                 type: BucketType.PIT,
                                 owner: PlayerId.PLAYER_TWO,
-                                stoneCount: INITIAL_PIT_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_PIT_STONE_COUNT
                         ),
                         new BucketDto(
                                 index: 13,
                                 type: BucketType.HOUSE,
                                 owner: PlayerId.PLAYER_TWO,
-                                stoneCount: INITIAL_HOUSE_STONE_COUNT
+                                stoneCount: NumericConstants.INITIAL_HOUSE_STONE_COUNT
                         )
                 ]
         )
