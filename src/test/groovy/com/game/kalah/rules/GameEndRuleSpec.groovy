@@ -51,6 +51,7 @@ class GameEndRuleSpec extends Specification {
         then:
         noExceptionThrown()
         game.winner.playerId == winner
+        game.winner.name != null
         where:
         nonEmptyPit | player1HouseStones | player2HouseStones | winner
         1           | 10                 | 20                 | PlayerId.PLAYER_TWO
