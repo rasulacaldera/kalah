@@ -184,7 +184,7 @@ class PostMoveRuleSpec extends Specification {
                 newIndex = 0;
             }
             BucketDto newBucket = buckets[newIndex];
-            Integer expectedCount = INITIAL_PIT_STONE_COUNT + 1
+            Integer expectedCount = NumericConstants.INITIAL_PIT_STONE_COUNT + 1
             if (newBucket.type == BucketType.HOUSE) {
 
                 if (newBucket.owner != player) {
@@ -201,7 +201,7 @@ class PostMoveRuleSpec extends Specification {
         }
 
         if (validateTotal) {
-            boolean isValidTotalStoneCount = buckets.stoneCount.sum() == INITIAL_PIT_STONE_COUNT * 12
+            boolean isValidTotalStoneCount = buckets.stoneCount.sum() == NumericConstants.INITIAL_PIT_STONE_COUNT * 12
             if (!isValidTotalStoneCount) {
                 return false
             }
