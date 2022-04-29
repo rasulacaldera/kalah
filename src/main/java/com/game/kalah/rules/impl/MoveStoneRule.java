@@ -1,6 +1,7 @@
 package com.game.kalah.rules.impl;
 
 import com.game.kalah.constants.BucketType;
+import com.game.kalah.constants.NumericConstants;
 import com.game.kalah.constants.PlayerId;
 import com.game.kalah.dto.BucketDto;
 import com.game.kalah.dto.GameDto;
@@ -16,17 +17,17 @@ public class MoveStoneRule implements GameRule {
     public BucketDto apply(GameDto game, BucketDto currentBucket) {
 
         List<BucketDto> buckets = game.getBuckets();
-        int lastIndex = buckets.size() - 1;//todo add numeric constant
+        int lastIndex = buckets.size() - NumericConstants.INT_ONE;
         int pebblesToMove = currentBucket.getStoneCount();
-        currentBucket.setStoneCount(0); //todo add numeric constant
+        currentBucket.setStoneCount(NumericConstants.EMPTY_PIT_STONE_COUNT);
 
-        while (pebblesToMove > 0) {//todo add numeric constant
+        while (pebblesToMove > NumericConstants.EMPTY_PIT_STONE_COUNT) {
             int nextIndex = getNextBucketIndex(currentBucket.getIndex(), lastIndex);
             currentBucket = buckets.get(nextIndex);
             if (!isAllowedToAddStone(game.getNextPlayer(), currentBucket)) {
                 continue;
             }
-            currentBucket.setStoneCount(currentBucket.getStoneCount() + 1);//todo add numeric constant
+            currentBucket.setStoneCount(currentBucket.getStoneCount() + NumericConstants.INT_ONE);
             pebblesToMove--;
         }
 
@@ -40,7 +41,7 @@ public class MoveStoneRule implements GameRule {
     }
 
     private Integer getNextBucketIndex(Integer currentIndex, Integer lastIndex) {
-        if (currentIndex.equals(lastIndex)) return 0;//todo add numeric constant
+        if (currentIndex.equals(lastIndex)) return NumericConstants.INT_ZERO;
         else return ++currentIndex;
     }
 }

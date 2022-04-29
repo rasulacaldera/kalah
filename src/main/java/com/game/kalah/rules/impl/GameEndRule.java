@@ -1,9 +1,6 @@
 package com.game.kalah.rules.impl;
 
-import com.game.kalah.constants.BucketType;
-import com.game.kalah.constants.ErrorMessage;
-import com.game.kalah.constants.GameStatus;
-import com.game.kalah.constants.PlayerId;
+import com.game.kalah.constants.*;
 import com.game.kalah.dto.ApiError;
 import com.game.kalah.dto.BucketDto;
 import com.game.kalah.dto.GameDto;
@@ -28,7 +25,7 @@ public class GameEndRule implements GameRule {
                 .filter(bucket -> bucket.getType().equals(BucketType.PIT))
                 .collect(Collectors.groupingBy(BucketDto::getOwner, Collectors.summingInt(BucketDto::getStoneCount)));
 
-        if (countPerPlayer.containsValue(0)) { //todo use numeric constant
+        if (countPerPlayer.containsValue(NumericConstants.INT_ZERO)) {
             game.setGameStatus(GameStatus.FINISHED);
             PlayerId winnerId = getWinnerId(game);
             Optional<PlayerDto> winner = game.getPlayers()

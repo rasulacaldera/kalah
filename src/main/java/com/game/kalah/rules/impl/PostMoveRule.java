@@ -1,6 +1,7 @@
 package com.game.kalah.rules.impl;
 
 import com.game.kalah.constants.BucketType;
+import com.game.kalah.constants.NumericConstants;
 import com.game.kalah.constants.PlayerId;
 import com.game.kalah.dto.BucketDto;
 import com.game.kalah.dto.GameDto;
@@ -25,9 +26,9 @@ public class PostMoveRule implements GameRule {
     }
 
     private void captureOpponentsStones(GameDto game, BucketDto currentBucket) {
-        if (currentBucket.getStoneCount() == 1 &&
+        if (currentBucket.getStoneCount().equals(NumericConstants.INT_ONE) &&
                 currentBucket.getType().equals(BucketType.PIT)
-                && currentBucket.getOwner().equals(game.getNextPlayer())) { //todo add numeric constant
+                && currentBucket.getOwner().equals(game.getNextPlayer())) {
             BucketDto opposingBucket = getOpposingBucket(game, currentBucket);
             Optional<BucketDto> playerHouse = game.getBuckets()
                     .stream()
@@ -38,8 +39,8 @@ public class PostMoveRule implements GameRule {
                 int stoneCount = playerHouse.get().getStoneCount() +
                         opposingBucket.getStoneCount() + currentBucket.getStoneCount();
                 playerHouse.get().setStoneCount(stoneCount);
-                opposingBucket.setStoneCount(0);//todo add numeric constant
-                currentBucket.setStoneCount(0);//todo add numeric constant
+                opposingBucket.setStoneCount(NumericConstants.EMPTY_PIT_STONE_COUNT);
+                currentBucket.setStoneCount(NumericConstants.EMPTY_PIT_STONE_COUNT);
             }
         }
     }

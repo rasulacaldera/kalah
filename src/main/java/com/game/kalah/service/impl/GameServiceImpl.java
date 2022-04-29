@@ -1,9 +1,6 @@
 package com.game.kalah.service.impl;
 
-import com.game.kalah.constants.BucketType;
-import com.game.kalah.constants.ErrorMessage;
-import com.game.kalah.constants.GameStatus;
-import com.game.kalah.constants.PlayerId;
+import com.game.kalah.constants.*;
 import com.game.kalah.dto.*;
 import com.game.kalah.exception.CustomServiceException;
 import com.game.kalah.repository.GameRepository;
@@ -22,7 +19,6 @@ import java.util.UUID;
 @Service
 public class GameServiceImpl implements GameService {
 
-    private static final int INITIAL_STONE_COUNT_PER_BUCKET = 4;
     private static final int MAX_BUCKET_COUNT = 14;
 
     final GameRepository gameRepository;
@@ -90,7 +86,7 @@ public class GameServiceImpl implements GameService {
                     .build();
         }
 
-        if (pitIndex < 0 || pitIndex >= MAX_BUCKET_COUNT) { //todo use numeric constant
+        if (pitIndex < NumericConstants.INT_ZERO || pitIndex >= MAX_BUCKET_COUNT) {
             throw CustomServiceException
                     .builder()
                     .error(new ApiError(ErrorMessage.PIT_INDEX_OUT_OF_BOUNDS,
@@ -131,14 +127,14 @@ public class GameServiceImpl implements GameService {
         for (int i = 0; i < 6; i++) {
             BucketDto bucket = new BucketDto();
             bucket.setOwner(playerId);
-            bucket.setStoneCount(INITIAL_STONE_COUNT_PER_BUCKET);
+            bucket.setStoneCount(NumericConstants.INITIAL_PIT_STONE_COUNT);
             bucket.setType(BucketType.PIT);
             buckets.add(bucket);
         }
 
         BucketDto house = new BucketDto();
         house.setOwner(playerId);
-        house.setStoneCount(0);
+        house.setStoneCount(NumericConstants.INITIAL_HOUSE_STONE_COUNT);
         house.setType(BucketType.HOUSE);
         buckets.add(house);
 

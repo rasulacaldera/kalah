@@ -3,6 +3,7 @@ package com.game.kalah.rules.impl;
 import com.game.kalah.constants.BucketType;
 import com.game.kalah.constants.ErrorMessage;
 import com.game.kalah.constants.GameStatus;
+import com.game.kalah.constants.NumericConstants;
 import com.game.kalah.dto.ApiError;
 import com.game.kalah.dto.BucketDto;
 import com.game.kalah.dto.GameDto;
@@ -43,7 +44,7 @@ public class PreMoveRule implements GameRule {
                     .build();
         }
 
-        if (currentBucket.getStoneCount() == 0) {
+        if (currentBucket.getStoneCount() == NumericConstants.EMPTY_PIT_STONE_COUNT) {
             throw CustomServiceException
                     .builder()
                     .error(new ApiError(ErrorMessage.PIT_HAS_NO_STONES))
