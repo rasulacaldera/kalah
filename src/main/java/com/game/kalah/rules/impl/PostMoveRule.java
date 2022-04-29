@@ -26,7 +26,8 @@ public class PostMoveRule implements GameRule {
 
     private void captureOpponentsStones(GameDto game, BucketDto currentBucket) {
         if (currentBucket.getStoneCount() == 1 &&
-                currentBucket.getType().equals(BucketType.PIT)) { //todo add numeric constant
+                currentBucket.getType().equals(BucketType.PIT)
+                && currentBucket.getOwner().equals(game.getNextPlayer())) { //todo add numeric constant
             BucketDto opposingBucket = getOpposingBucket(game, currentBucket);
             Optional<BucketDto> playerHouse = game.getBuckets()
                     .stream()
@@ -34,9 +35,11 @@ public class PostMoveRule implements GameRule {
                             bucket.getOwner().equals(game.getNextPlayer()))
                     .findFirst();
             if (playerHouse.isPresent()) {
-                int stoneCount = playerHouse.get().getStoneCount() + opposingBucket.getStoneCount();
+                int stoneCount = playerHouse.get().getStoneCount() +
+                        opposingBucket.getStoneCount() + currentBucket.getStoneCount();
                 playerHouse.get().setStoneCount(stoneCount);
                 opposingBucket.setStoneCount(0);//todo add numeric constant
+                currentBucket.setStoneCount(0);//todo add numeric constant
             }
         }
     }

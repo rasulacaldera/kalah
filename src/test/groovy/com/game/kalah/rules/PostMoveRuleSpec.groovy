@@ -74,7 +74,7 @@ class PostMoveRuleSpec extends Specification {
         PlayerIndex.PLAYER_TWO | 13
     }
 
-    def "Apply Rule | Capture Opponent Stones | Does not capture stones when enemy pits"() { //todo
+    def "Apply Rule | Capture Opponent Stones | Does not capture stones when ending on a non empty pit or empty house"() {
         given:
         GameDto game = getDummyGame()
         game.nextPlayer = player
@@ -83,11 +83,91 @@ class PostMoveRuleSpec extends Specification {
         postMoveRule.apply(game, currentBucket)
         then:
         noExceptionThrown()
-        game.nextPlayer == player
+        game.buckets
+                .findAll(bucket -> bucket.type == BucketType.HOUSE)
+                .every { bucket -> bucket.stoneCount == INITIAL_HOUSE_STONE_COUNT }
         where:
         player                 | endIndex
+        PlayerIndex.PLAYER_ONE | 0
+        PlayerIndex.PLAYER_ONE | 1
+        PlayerIndex.PLAYER_ONE | 2
+        PlayerIndex.PLAYER_ONE | 3
+        PlayerIndex.PLAYER_ONE | 4
+        PlayerIndex.PLAYER_ONE | 5
         PlayerIndex.PLAYER_ONE | 6
+        PlayerIndex.PLAYER_TWO | 7
+        PlayerIndex.PLAYER_TWO | 8
+        PlayerIndex.PLAYER_TWO | 9
+        PlayerIndex.PLAYER_TWO | 10
+        PlayerIndex.PLAYER_TWO | 11
+        PlayerIndex.PLAYER_TWO | 12
         PlayerIndex.PLAYER_TWO | 13
+    }
+
+    def "Apply Rule | Capture Opponent Stones | Does not capture stones when ending on a empty opponent empty pit"() {
+        given:
+        GameDto game = getDummyGame()
+        game.nextPlayer = player
+        BucketDto currentBucket = game.buckets[endIndex]
+        currentBucket.stoneCount = 1
+        when:
+        postMoveRule.apply(game, currentBucket)
+        then:
+        noExceptionThrown()
+        game.buckets
+                .findAll(bucket -> bucket.type == BucketType.HOUSE)
+                .every { bucket -> bucket.stoneCount == INITIAL_HOUSE_STONE_COUNT }
+        where:
+        player                 | endIndex
+        PlayerIndex.PLAYER_ONE | 7
+        PlayerIndex.PLAYER_ONE | 8
+        PlayerIndex.PLAYER_ONE | 9
+        PlayerIndex.PLAYER_ONE | 10
+        PlayerIndex.PLAYER_ONE | 11
+        PlayerIndex.PLAYER_ONE | 12
+        PlayerIndex.PLAYER_TWO | 0
+        PlayerIndex.PLAYER_TWO | 1
+        PlayerIndex.PLAYER_TWO | 2
+        PlayerIndex.PLAYER_TWO | 3
+        PlayerIndex.PLAYER_TWO | 4
+        PlayerIndex.PLAYER_TWO | 5
+    }
+
+    def "Apply Rule | Capture Opponent Stones | Captures enemy stones when ending in players empty pit"() {
+        given:
+        Integer startingPitStoneCount = 1
+        Integer emptyPitCount = 0
+        GameDto game = getDummyGame()
+        game.nextPlayer = player
+        BucketDto currentBucket = game.buckets[endIndex]
+        currentBucket.stoneCount = startingPitStoneCount
+        game.buckets[opponentBucketIndex].stoneCount = INITIAL_PIT_STONE_COUNT
+        when:
+        postMoveRule.apply(game, currentBucket)
+        then:
+        noExceptionThrown()
+        game.buckets[opponentBucketIndex].stoneCount == emptyPitCount
+        game.buckets[endIndex].stoneCount == emptyPitCount
+        BucketDto currentPlayerHouse = game.buckets
+                .find(bucket -> bucket.type == BucketType.HOUSE && bucket.owner == player)
+        currentPlayerHouse.stoneCount == startingPitStoneCount + INITIAL_PIT_STONE_COUNT
+        BucketDto opponentPlayerHouse = game.buckets
+                .find(bucket -> bucket.type == BucketType.HOUSE && bucket.owner != player)
+        opponentPlayerHouse.stoneCount == INITIAL_HOUSE_STONE_COUNT
+        where:
+        player                 | endIndex | opponentBucketIndex
+        PlayerIndex.PLAYER_ONE | 0        | 12
+        PlayerIndex.PLAYER_ONE | 1        | 11
+        PlayerIndex.PLAYER_ONE | 2        | 10
+        PlayerIndex.PLAYER_ONE | 3        | 9
+        PlayerIndex.PLAYER_ONE | 4        | 8
+        PlayerIndex.PLAYER_ONE | 5        | 7
+        PlayerIndex.PLAYER_TWO | 7        | 5
+        PlayerIndex.PLAYER_TWO | 8        | 4
+        PlayerIndex.PLAYER_TWO | 9        | 3
+        PlayerIndex.PLAYER_TWO | 10       | 2
+        PlayerIndex.PLAYER_TWO | 11       | 1
+        PlayerIndex.PLAYER_TWO | 12       | 0
     }
 
     private boolean assertBuckets(List<BucketDto> buckets,
