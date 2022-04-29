@@ -131,6 +131,40 @@ class PostMoveRuleSpec extends Specification {
         PlayerId.PLAYER_TWO | 5
     }
 
+    def "Apply Rule | Capture Opponent Stones | Does not capture stones when corresponding enemy pit is empty"() {
+        given:
+        Integer startingPitStoneCount = 1
+        Integer emptyPitCount = 0
+        GameDto game = getDummyGame()
+        game.nextPlayer = player
+        BucketDto currentBucket = game.buckets[endIndex]
+        currentBucket.stoneCount = startingPitStoneCount
+        game.buckets[opponentBucketIndex].stoneCount = NumericConstants.EMPTY_PIT_STONE_COUNT
+        when:
+        postMoveRule.apply(game, currentBucket)
+        then:
+        noExceptionThrown()
+        game.buckets[opponentBucketIndex].stoneCount == emptyPitCount
+        game.buckets[endIndex].stoneCount == startingPitStoneCount
+        game.buckets
+                .findAll(bucket -> bucket.type == BucketType.HOUSE)
+                .every { bucket -> bucket.stoneCount == NumericConstants.INITIAL_HOUSE_STONE_COUNT }
+        where:
+        player              | endIndex | opponentBucketIndex
+        PlayerId.PLAYER_ONE | 0        | 12
+        PlayerId.PLAYER_ONE | 1        | 11
+        PlayerId.PLAYER_ONE | 2        | 10
+        PlayerId.PLAYER_ONE | 3        | 9
+        PlayerId.PLAYER_ONE | 4        | 8
+        PlayerId.PLAYER_ONE | 5        | 7
+        PlayerId.PLAYER_TWO | 7        | 5
+        PlayerId.PLAYER_TWO | 8        | 4
+        PlayerId.PLAYER_TWO | 9        | 3
+        PlayerId.PLAYER_TWO | 10       | 2
+        PlayerId.PLAYER_TWO | 11       | 1
+        PlayerId.PLAYER_TWO | 12       | 0
+    }
+
     def "Apply Rule | Capture Opponent Stones | Captures enemy stones when ending in players empty pit"() {
         given:
         Integer startingPitStoneCount = 1

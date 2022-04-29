@@ -30,17 +30,19 @@ public class PostMoveRule implements GameRule {
                 currentBucket.getType().equals(BucketType.PIT)
                 && currentBucket.getOwner().equals(game.getNextPlayer())) {
             BucketDto opposingBucket = getOpposingBucket(game, currentBucket);
-            Optional<BucketDto> playerHouse = game.getBuckets()
-                    .stream()
-                    .filter(bucket -> bucket.getType().equals(BucketType.HOUSE) &&
-                            bucket.getOwner().equals(game.getNextPlayer()))
-                    .findFirst();
-            if (playerHouse.isPresent()) {
-                int stoneCount = playerHouse.get().getStoneCount() +
-                        opposingBucket.getStoneCount() + currentBucket.getStoneCount();
-                playerHouse.get().setStoneCount(stoneCount);
-                opposingBucket.setStoneCount(NumericConstants.EMPTY_PIT_STONE_COUNT);
-                currentBucket.setStoneCount(NumericConstants.EMPTY_PIT_STONE_COUNT);
+            if (opposingBucket.getStoneCount() > NumericConstants.EMPTY_PIT_STONE_COUNT) {
+                Optional<BucketDto> playerHouse = game.getBuckets()
+                        .stream()
+                        .filter(bucket -> bucket.getType().equals(BucketType.HOUSE) &&
+                                bucket.getOwner().equals(game.getNextPlayer()))
+                        .findFirst();
+                if (playerHouse.isPresent()) {
+                    int stoneCount = playerHouse.get().getStoneCount() +
+                            opposingBucket.getStoneCount() + currentBucket.getStoneCount();
+                    playerHouse.get().setStoneCount(stoneCount);
+                    opposingBucket.setStoneCount(NumericConstants.EMPTY_PIT_STONE_COUNT);
+                    currentBucket.setStoneCount(NumericConstants.EMPTY_PIT_STONE_COUNT);
+                }
             }
         }
     }
