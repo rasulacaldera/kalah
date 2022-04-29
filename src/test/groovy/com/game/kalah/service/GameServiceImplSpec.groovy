@@ -28,7 +28,7 @@ class GameServiceImplSpecification extends Specification {
     private GameEndRule gameEndRule = Mock(GameEndRule)
 
     private static final int INITIAL_STONE_COUNT = 4;
-
+    private static final int INITIAL_HOUSE_STONE_COUNT = 0;
 
     def setup() {
         gameService = new GameServiceImpl(gameRepository, moveStoneRule, postMoveRule, preMoveRule, gameEndRule)
@@ -57,6 +57,8 @@ class GameServiceImplSpecification extends Specification {
         game.buckets.findAll { it -> it.owner == player2 && it.type == BucketType.HOUSE }.size() == 1
         game.buckets.findAll { it -> it.type == BucketType.PIT }
                 .every { it -> it.stoneCount == INITIAL_STONE_COUNT }
+        game.buckets.findAll { it -> it.type == BucketType.HOUSE }
+                .every { it -> it.stoneCount == INITIAL_HOUSE_STONE_COUNT }
     }
 
     def "Make Move | Validations | Throws an Exception when either input is null"() {
