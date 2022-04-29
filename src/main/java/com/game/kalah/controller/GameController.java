@@ -19,9 +19,9 @@ public class GameController {
     }
 
     @PostMapping
-    public ResponseEntity<GameDto> createGame(@RequestBody CreateGameRequestModel bug) {
+    public ResponseEntity<GameDto> createGame(@RequestBody CreateGameRequestModel createGameRequest) {
 
-        GameDto responseBug = gameService.createGame(bug);
+        GameDto responseBug = gameService.createGame(createGameRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBug);
     }
