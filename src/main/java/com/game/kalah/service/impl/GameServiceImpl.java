@@ -81,7 +81,7 @@ public class GameServiceImpl implements GameService {
         return game;
     }
 
-    private void validateMoveInputs(String gameId, Integer pitIndex) { //todo test this
+    private void validateMoveInputs(String gameId, Integer pitIndex) {
 
         if (gameId == null || pitIndex == null) {
             throw CustomServiceException
@@ -147,20 +147,13 @@ public class GameServiceImpl implements GameService {
     }
 
     private List<BucketDto> processAndLinkBuckets(List<BucketDto> buckets) {
-//        Integer lastIndex = buckets.size() - 1;
         for (int i = 0; i < buckets.size(); i++) {
             BucketDto bucket = buckets.get(i);
             bucket.setIndex(i);
-//            bucket.setNextBucketDto(buckets.get(getNextLinkIndex(i, lastIndex)));
         }
 
         return buckets;
     }
-
-//    private Integer getNextLinkIndex(Integer currentIndex, Integer lastIndex) { //todo remove
-//        if (currentIndex == lastIndex) return 0;
-//        else return ++currentIndex;
-//    }
 
     private List<GameRule> getGameRules() {
         List<GameRule> rules = new ArrayList<>();

@@ -22,7 +22,7 @@ public class MoveStoneRule implements GameRule {
 
         while (pebblesToMove > 0) {//todo add numeric constant
             int nextIndex = getNextBucketIndex(currentBucket.getIndex(), lastIndex);
-            currentBucket = buckets.get(nextIndex); //todo can refractor
+            currentBucket = buckets.get(nextIndex);
             if (!isAllowedToAddStone(game.getNextPlayer(), currentBucket)) {
                 continue;
             }
