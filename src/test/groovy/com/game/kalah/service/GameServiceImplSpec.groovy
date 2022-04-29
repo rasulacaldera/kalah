@@ -1,3 +1,5 @@
+package com.game.kalah.service
+
 import com.game.kalah.constants.*
 import com.game.kalah.dto.BucketDto
 import com.game.kalah.dto.CreateGameRequestModel
