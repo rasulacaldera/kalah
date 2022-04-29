@@ -21,16 +21,16 @@ public class GameController {
     @PostMapping
     public ResponseEntity<GameDto> createGame(@RequestBody CreateGameRequestModel createGameRequest) {
 
-        GameDto responseBug = gameService.createGame(createGameRequest);
+        GameDto game = gameService.createGame(createGameRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseBug);
+        return ResponseEntity.status(HttpStatus.CREATED).body(game);
     }
 
     @PutMapping("/{gameId}/pits/{pitIndex}")
     public ResponseEntity<GameDto> move(@PathVariable String gameId, @PathVariable Integer pitIndex) {
 
-        GameDto responseBug = gameService.makeMove(gameId, pitIndex);
+        GameDto game = gameService.makeMove(gameId, pitIndex);
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseBug);
+        return ResponseEntity.status(HttpStatus.OK).body(game);
     }
 }
