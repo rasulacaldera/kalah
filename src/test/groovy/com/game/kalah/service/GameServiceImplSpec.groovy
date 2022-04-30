@@ -30,6 +30,25 @@ class GameServiceImplSpecification extends Specification {
         gameService = new GameServiceImpl(gameRepository, moveStoneRule, postMoveRule, preMoveRule, gameEndRule)
     }
 
+    def "Create Game | Validation | Throw error when either name is null"() {
+        given:
+        CreateGameRequestModel createGameRequest = new CreateGameRequestModel(
+                playerOneName: playerOneName,
+                playerTwoName: playerTwoName
+        )
+        when:
+        gameService.createGame(createGameRequest)
+        then:
+        Exception ex = thrown(CustomServiceException.class)
+        ex.error.code == ErrorMessage.PLAYER_NAMES_CANNOT_BE_NULL.code
+        ex.error.message == ErrorMessage.PLAYER_NAMES_CANNOT_BE_NULL.message
+        where:
+        playerOneName | playerTwoName
+        null          | "Player 2"
+        "Player 1"    | null
+        null          | null
+    }
+
     def "Create Game | Successfully creates a game with valid inputs"() {
         given:
         PlayerId player1 = PlayerId.PLAYER_ONE

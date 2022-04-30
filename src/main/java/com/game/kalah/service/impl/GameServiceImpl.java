@@ -39,6 +39,8 @@ public class GameServiceImpl implements GameService {
     @Override
     public GameDto createGame(CreateGameRequestModel gameRequest) {
 
+        validateCreateGameRequest(gameRequest);
+
         GameDto game = new GameDto();
         game.setGameId(UUID.randomUUID().toString());
         game.setPlayers(initializeAndGetPlayers(gameRequest));
@@ -75,6 +77,16 @@ public class GameServiceImpl implements GameService {
         gameRepository.save(game);
 
         return game;
+    }
+
+    private void validateCreateGameRequest(CreateGameRequestModel gameRequest) {
+
+        if (gameRequest.getPlayerOneName() == null || gameRequest.getPlayerTwoName() == null) {
+            throw CustomServiceException
+                    .builder()
+                    .error(new ApiError(ErrorMessage.PLAYER_NAMES_CANNOT_BE_NULL))
+                    .build();
+        }
     }
 
     private void validateMoveInputs(String gameId, Integer pitIndex) {
