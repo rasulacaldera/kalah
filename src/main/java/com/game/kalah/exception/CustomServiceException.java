@@ -7,5 +7,5 @@ import lombok.Getter;
 @Builder
 @Getter
 public class CustomServiceException extends RuntimeException {
-    private final transient ApiError error;
+    private final ApiError error;
 }
